@@ -44,30 +44,9 @@
 <body >
   
   <div id=halaman>
-    <div class="row ml-2 mr-2">
-      <div class="col-2 mb-2 mt-2">
-        <img src="{{ asset('appwebsite/gambar/sahabat_psikologi.png')}}" style="width: 200px; height: 200px;"/>
-      </div>
-      <div class="col-9 mb-5 mt-5">
-        <font face="Times New Roman" color="BLACK" size=4>
-          <p align="center"><b> People Psychology Consulting</b></p>
-        </font>
-        <font face="Times New Roman" color="BLACK" size=3>
-          <p align="center"> SAHABAT PSIKOLOGI</p>
-        </font>
-        {{-- <font face="Arial" color="green"> <p align="center"> PERMATA RENTAL </p></font> --}}
-        <font face="Times New Roman" color="black" size="2">
-          <p align="center"> <i>Alamat. Jl. Hibrida raya ujung rt.08./02 no.07 kel. Pagar dewa Kec. Selebar kota bengkulu </i></p>
-        </font>
-        <font face="Times New Roman" color="black" size="1">
-          <p align="center"> <i>0823-8000-8887</i></p>
-        </font>
-      </div>
-      <hr>
+    <img src="{{ asset('appwebsite/gambar/kop surat ppc.png')}}" style="width: 100%; height: 8%;"/>
       <div class="container">
-        <hr>
-        <font face="Arial" color="BLACK" size="4">
-          <p align="center"> <u> <b> HASIL PEMERIKSAAN PSIKOLOGI </b></u>
+       
           </font><br>
           {{-- <font face="Arial" color="red" size="4"> Nomer: 8021/SMKN1/2015 </p></font> --}}
           <font face="Arial" color="BLACK" size="4">
@@ -174,6 +153,7 @@
                             </span>
                             @enderror
                           </div>
+                          <input type="hidden" name="psikolog[$item_hasil->id_kategori]" value="">
                           
                         </td>
                       </tr>
@@ -195,15 +175,15 @@
                     echo ('Subjek');
                     if($hs->pesentil >= 75 ){
                       echo(' Subjek kuat ');
-                      echo ($hs->keterangan_kategori);
+                      echo ($hs->analisis);
                       echo('  Namun,  ');
                     }elseif ($hs->pesentil >= 24 && $hs->pesentil <= 74) {
                       echo(' cukup ');
-                      echo ($hs->keterangan_kategori);
+                      echo ($hs->analisis);
                       echo(' Tapi ');
                     }elseif ($hs->pesentil <= 23){
                       echo(' lemah ');
-                      echo ($hs->keterangan_kategori);
+                      echo ($hs->analisis);
                     }else{
                       echo ('Tidak Ketahui');
                     }
@@ -231,11 +211,32 @@
                   
                   
                   
+                  <div class="row">
+                    <div class="col 3">
+                        <p align="left">
+                            <br>
+                            Direktur Utama<br>
+                            <img src="{{ asset('appwebsite/gambar/ttddirektur.png')}}" style="width: 30%; height: 8%;"/>
+                            <br>
+                            
+                            <h5>Indah Syoraya, S.Psi., M.A</h5>
+                        </p>
+                    </div>
+                    
+                    <div class="col 4">
+                        <p align="right">
+                            <br>
+                            {{-- Bengkulu, {{Carbon\Carbon::now()->isoFormat(' D MMM Y')}} --}}
+                            Bengkulu, {{Carbon\Carbon::now()->isoFormat(' D MMM Y')}}<br>
+                            Psikolog Utama<br>
+                            <img src="{{ asset('appwebsite/gambar/ttdpsikolog.png')}}" style="width: 30%; height: 8%;"/>
+                    <br>
+                    <br>
+                    <h5 align="right">Yocie, S.Psi., M.Psi</h5>
+                    
                 </p>
-                <br>
-                <p align="right">
-                  (.........................................)
-                </p>
+                    </div>
+                </div>
                 
                 {{-- <script type="text/javascript">
                   window.print();

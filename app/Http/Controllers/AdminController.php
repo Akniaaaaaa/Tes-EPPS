@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Soal;
 use App\Models\Jadwal;
 use App\Models\Peserta;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -22,8 +23,41 @@ class AdminController extends Controller
      */
     public function index()
     {
+        // $pp = DB::table('tb_pesertas')->where(DB::raw(MONTH('created_at')), $month);
+        $peserta = DB::table('tb_pesertas')
+            ->select([
+                DB::raw('count(id) as `count`'),
+                DB::raw('MONTH(created_at) as month')
+            ])
+            ->groupBy('month')
+            // ->where('created_at', '>=', Carbon::now()->month(1))
+            ->get();
+        // dd($peserta);
+        $nb =  [
+            '   ',
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ];
+        $bulan = [];
+        // data untuk chart
+        $data = [];
+        foreach ($peserta as $p) {
+            $bulan[] =  $nb[$p->month];
+            $data[] = $p->count;
+        }
+        // dd($peserta);
 
-        return view('admin/dashboard');
+        return view('admin/dashboard', compact('bulan', 'data'));
     }
     public function soal()
     {
@@ -94,7 +128,7 @@ class AdminController extends Controller
     }
     public function jadwal_tes()
     {
-        $tb_jadwal = DB::table('tb_jadwal')->get();
+        $tb_jadwal = DB::table('tb_jadwal')->paginate(5);
         return view('admin.jadwal_tes', compact('tb_jadwal'));
     }
     public function tambah_jadwal()

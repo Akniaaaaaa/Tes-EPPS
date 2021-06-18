@@ -13,6 +13,7 @@ use App\Models\Jadwal;
 use App\Models\Soal;
 use App\Models\Peserta;
 use App\Models\Jawaban;
+// use Carbon\Carbon;
 
 class PesertaController extends Controller
 {
@@ -32,11 +33,17 @@ class PesertaController extends Controller
     public function jadwal_peserta(Peserta $peserta)
     {
         $peserta =  auth()->user()->id;
-        $jadwall = DB::table('tb_jadwal')
-            ->leftJoin('tb_pesertas', 'tb_jadwal.id_peserta', 'tb_pesertas.id')
-            ->where('tb_pesertas.id', $peserta)
-            ->first();
-        // $jadwal = Jadwal::with('peserta')->where('id_peserta', $peserta)->get();
+        $jadwall =  DB::table('tb_jadwal')
+            ->where('tb_jadwal.id_peserta', '=', auth()->user()->id)
+            ->join('tb_pesertas', 'tb_jadwal.id_peserta', '=', 'tb_pesertas.id')
+            ->select(
+                'tb_pesertas.nama as nama',
+                'tb_jadwal.tanggal_tes as tanggal_tes',
+                'tb_jadwal.jam_tes as jam_tes',
+                'tb_jadwal.token as token',
+            )
+            ->get();
+        Jadwal::with('peserta')->where('id_peserta', $peserta)->get();
         return view('peserta.jadwal', compact('peserta', 'jadwall'));
     }
     public function store_akun(Request $request)
@@ -60,7 +67,9 @@ class PesertaController extends Controller
                 'alamat' => $request->alamat,
                 'no_hp' => $request->no_hp,
                 'tempat_lahir' => $request->tempat_lahir,
+                'nama_pengguna' => $request->nama_pengguna,
                 'foto' => $fileName,
+                'foto_pembayaran' => $fileName,
             ]);
         } else {
             Peserta::create([
@@ -73,6 +82,7 @@ class PesertaController extends Controller
                 'alamat' => $request->alamat,
                 'no_hp' => $request->no_hp,
                 'tempat_lahir' => $request->tempat_lahir,
+                'nama_pengguna' => $request->nama_pengguna,
             ]);
         }
 
@@ -102,17 +112,34 @@ class PesertaController extends Controller
     }
     public function lihat($nomor)
     {
+        // $now = now();
+        // $now1h =  now()->add(1, 'hours');
+        // $selisih = $now1h - $now;
+        // dd($selisih);
         $soal = Soal::where('nomor_soal', $nomor)->first();
         $tb_soal = Soal::all();
         $id_peserta = auth()->user()->id;
-        $tb_jawaban = DB::table('tb_jawaban')
+        $jawaban = DB::table('tb_jawaban')
             ->where('id_peserta', $id_peserta)
-
+            ->join('tb_soal', 'tb_jawaban.nomor_soal', '=', 'tb_soal.nomor_soal')
+            ->select(
+                'tb_jawaban.nomor_soal as nomor_soal',
+                'tb_soal.nomor_soal as nomor_soall'
+            )
             ->get();
-
-        dd($tb_jawaban);
-        $jawaban = Jawaban::where('nomor_soal', $nomor)->first()->jawaban;
-        return view('peserta/soal', compact('soal', 'tb_soal', 'tb_jawaban', 'jawaban'))->with('soal_nomor', $nomor);
+        $bis = DB::table('tb_soal')
+            ->join('tb_jawaban', 'tb_soal.nomor_soal', '=', 'tb_jawaban.nomor_soal')
+            ->where('id_peserta', $id_peserta)
+            ->select(
+                'tb_jawaban.nomor_soal as nomor_soal_jawaban',
+                'tb_jawaban.jawaban as jawaban',
+                'tb_soal.nomor_soal as nomor_soal'
+            )
+            ->get();
+        // dd($bis);
+        // dd($jawaban);
+        // $jawaban = Jawaban::where('nomor_soal', $nomor)->first()->jawaban;
+        return view('peserta/soal', compact('soal', 'bis', 'tb_soal',  'jawaban',))->with('soal_nomor', $nomor);
     }
 
     /**
@@ -131,7 +158,7 @@ class PesertaController extends Controller
             DB::table('tb_jawaban')->where('id_jawaban', $jawaban->id_jawaban)->update(['nomor_soal' => $request->input('nomor_soal')]);
             DB::table('tb_jawaban')->where('id_jawaban', $jawaban->id_jawaban)->update(['jawaban' => $request->input('pilihan')]);
             if ($nomor_soal) {
-                return redirect()->route('hpp.peserta', Auth::guard('peserta')->id())->with('status', 'Jawaban Berhasil diupdate');
+                return redirect()->route('soal', $request->input('nomor_soal') + 1)->with('status', 'Jawaban Berhasil diupdate');
             } else {
                 return redirect()->route('soal', $request->input('nomor_soal') + 1)->with('status', 'Jawaban Berhasil diupdate');
             }
@@ -153,5 +180,14 @@ class PesertaController extends Controller
     {
 
         return view('peserta/petunjuk');
+    }
+    public function cari(Request $request)
+    {
+        $cari = $request->cari;
+        $tb_peserta = DB::table('tb_pesertas')
+            ->where('nama', 'like', "%" . $cari . "%")
+            ->orwhere('email', 'like', "%" . $cari . "%")
+            ->paginate();
+        return view('admin/peserta', compact('tb_peserta'));
     }
 }

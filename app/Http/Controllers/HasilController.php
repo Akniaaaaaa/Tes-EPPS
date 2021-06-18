@@ -688,21 +688,41 @@ class HasilController extends Controller
             $k15->cons = 0;
         }
         $k15->save();
-
+        $jenis_kelamin = auth()->user()->jenis_kelamin;
+        $id = auth()->user()->id;
+        $nama_peserta = Peserta::where('id', $id)->first();
+        $peserta_id = Peserta::where('id', $id)->first()->id;
+        $hasil = DB::table('tb_hasil')
+            ->where('id_peserta', $id)
+            ->leftJoin('tb_kategori', 'tb_hasil.id_kategori', 'tb_kategori.id_kategori')
+            ->select(
+                'tb_kategori.id_kategori as id_kategori',
+                'tb_kategori.nama_kategori as nama_kategori',
+                'tb_kategori.keterangan_kategori as keterangan_kategori',
+                'tb_hasil.id_pesentil as pesentil',
+                'tb_hasil.analisis as analisis',
+            )
+            ->get();
         // return redirect('/peserta/hpp');
-        return redirect('peserta/hasil', compact('peserta'));;
+        return view('peserta/hasil', compact('nama_peserta', 'peserta_id', 'hasil'));
+
+        // return redirect()->route('hpp.peserta', Auth::guard('peserta')->id());
     }
     public function hasil_peserta()
     {
 
         $hasil = DB::table('tb_hasil')
             ->leftJoin('tb_pesertas', 'tb_hasil.id_peserta', 'tb_pesertas.id')
+            ->leftJoin('tb_pegawais', 'tb_hasil.psikolog', 'tb_pegawais.id')
             ->groupBy('tb_pesertas.nama')
             ->select(
                 'tb_pesertas.nama as nama',
                 'tb_hasil.id_hasil as id_hasil',
                 'tb_hasil.id_peserta as id_peserta',
+                'tb_hasil.psikolog as psikolog',
                 'tb_pesertas.id as id',
+                'tb_pegawais.id as id',
+                'tb_pegawais.nama as nama_pegawai',
             )
             ->get();
         return view('admin/hasil', compact('hasil'));
@@ -715,26 +735,28 @@ class HasilController extends Controller
      */
     public function cetak_hasil($id)
     {
-        $peserta = auth()->user();
-        $peserta_id = auth()->user()->id;
         $jenis_kelamin = auth()->user()->jenis_kelamin;
-        $id_persentil = DB::table('tb_hasil')
-            ->leftJoin('tb_pesertas', 'tb_hasil.id_peserta', 'tb_pesertas.id')
-            ->where('tb_pesertas.id', $peserta_id)
-            ->get()
-            ->first()
-            ->sum;
-        $hasil = DB::table('tb_pesentil')
-            ->where('id_persentil', $id_persentil)
-            ->where('tb_pesentil.jenis_kelamin', $jenis_kelamin)
-            ->leftJoin('tb_kategori', 'tb_pesentil.id_kategori', 'tb_kategori.id_kategori')
+        $id = auth()->user()->id;
+        $nama_peserta = Peserta::where('id', $id)->first();
+        $peserta_id = Peserta::where('id', $id)->first()->id;
+        $hasil = DB::table('tb_hasil')
+            ->where('id_peserta', $id)
+            ->leftJoin('tb_kategori', 'tb_hasil.id_kategori', 'tb_kategori.id_kategori')
+            ->select(
+                'tb_kategori.id_kategori as id_kategori',
+                'tb_kategori.nama_kategori as nama_kategori',
+                'tb_kategori.keterangan_kategori as keterangan_kategori',
+                'tb_hasil.id_pesentil as pesentil',
+                'tb_hasil.analisis as analisis',
+                'tb_hasil.id_hasil as id_hasil',
+            )
             ->get();
+        $jadwal = DB::table('tb_jadwal')
+            ->where('id_peserta', $id)
+            ->first()->tanggal_tes;
         $hasil1 = Hasil::with(['kategori', 'peserta'])->where('id_peserta', $id)->get();
         $kategori = Kategori::all();
-        $tinggi = $id_persentil >= 75;
-        $cukup = $id_persentil <= 75 && $id_persentil >= 24;
-        $rendah = $id_persentil <= 23;
-        return view('peserta/hasil', compact('peserta', 'hasil', 'hasil1', 'kategori', 'tinggi', 'cukup', 'rendah'));
+        return view('peserta/hasil_tes', compact('nama_peserta', 'hasil', 'hasil1', 'kategori', 'jadwal'));
     }
     public function info_peserta($id)
     {
@@ -760,15 +782,10 @@ class HasilController extends Controller
                 'tb_hasil.id_pesentil as pesentil',
                 'tb_hasil.analisis as analisis',
             )
-
-            // ->where('tb_pesentil.jenis_kelamin', $jenis_kelamin)
-            // ->leftJoin('tb_pesentil', 'tb_hasil.id_pesentil', 'tb_pesentil.id')
             ->get();
 
         $hasil1 = Hasil::with(['kategori', 'peserta'])->where('id_peserta', $id)
-            // ->where('id_kategori')
             ->get();
-        // dd($hasil1);
         $kategori = Kategori::all();
         $tinggi = $id_persentil >= 75;
         $cukup = $id_persentil <= 75 && $id_persentil >= 24;
@@ -792,7 +809,11 @@ class HasilController extends Controller
             //     ->first();
             DB::table('tb_hasil')->where('id_peserta', $peserta_id)
                 ->where('id_kategori', $key)
-                ->update(['analisis' => $value]);
+                ->update([
+                    'analisis' => $value,
+                    'psikolog' => Auth::user()->id
+                ]);
+
             // $hasil = new Hasil;
             // $hasil->analisis = $value;
             // $hasil->update();
@@ -809,9 +830,27 @@ class HasilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function cetak($id)
     {
-        //
+
+        $jenis_kelamin = auth()->user()->jenis_kelamin;
+        $id = auth()->user()->id;
+        $nama_peserta = Peserta::where('id', $id)->first();
+        $peserta_id = Peserta::where('id', $id)->first()->id;
+        $hasil = DB::table('tb_hasil')
+            ->where('id_peserta', $id)
+            ->leftJoin('tb_kategori', 'tb_hasil.id_kategori', 'tb_kategori.id_kategori')
+            ->select(
+                'tb_kategori.id_kategori as id_kategori',
+                'tb_kategori.nama_kategori as nama_kategori',
+                'tb_kategori.keterangan_kategori as keterangan_kategori',
+                'tb_hasil.id_pesentil as pesentil',
+                'tb_hasil.analisis as analisis',
+            )
+            ->get();
+        $hasil1 = Hasil::with(['kategori', 'peserta'])->where('id_peserta', $id)->get();
+        $kategori = Kategori::all();
+        return view('peserta/cetak_hpp', compact('nama_peserta', 'hasil', 'hasil1', 'kategori', 'peserta_id'));
     }
 
     /**

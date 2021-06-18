@@ -18,11 +18,11 @@ class AuthController extends Controller
         //     'email' => 'required',
         //     'password' => 'required'
         // ]);
-        if (Auth::guard('pegawai')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::guard('pegawai')->attempt(['nama_pengguna' => $request->nama_pengguna, 'password' => $request->password])) {
             return redirect('/dashboard');
-        } elseif (Auth::guard('peserta')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        } elseif (Auth::guard('peserta')->attempt(['nama_pengguna' => $request->nama_pengguna, 'password' => $request->password])) {
             return redirect('/peserta/petunjuk');
         }
-        return redirect('/');
+        return redirect('/')->with('status', 'Gagal masuk, nama pengguna atau password terdapat kesalahan');
     }
 }

@@ -16,7 +16,7 @@
                     <div class="container-fluid">
                         {{-- <h2 class="text-center display-4">Search</h2> --}}
                         <div class="row">
-                            <div class="col-md-8 offset-md-2">
+                            <div class="col-md-8 offset-md-2 mb-5">
                                 <form action="/admin/cari_jadwal_ujian" method="GET">
                                     <div class="input-group">
                                         <input type="search" name="cari" value="{{ old('cari') }}" class="form-control form-control-lg" placeholder="Temukan Peserta">
@@ -55,10 +55,21 @@
                             <td>{{$no++}} </td>
                             <td>{{$p->nama}} </td>
                             <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
-                                    <a href="#" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Link</a>
-                                  </div>    
+                               @if ($p->psikolog !=null)
+                               <span class="badge bg-primary" style="width: 100%; height: 10%"><h4 style="color: cornsilk;">HPP dianalasis oleh {{ $p->nama_pegawai}}</h4></span></h1>
+                               @else
+                               <span class="badge bg-danger" style="width: 100%; height: 10%"><h4 style="color: cornsilk;">HPP belum dianalisis </h4></span></h1>
+                               @endif
+                               {{-- <?php
+                                   
+                                    if($p->psikolog !=null ){
+                                    echo(' HPP dianalasis oleh ');
+                                    echo ($p->nama_pegawai);
+                                
+                                    }else{
+                                    echo ('Belum dianalisis');
+                                    }
+                             ?> --}}
                             </td>
 
                             <td>

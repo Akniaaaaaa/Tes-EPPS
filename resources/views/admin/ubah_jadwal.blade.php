@@ -21,11 +21,14 @@
           <div class="col-10 ml-5">
               
               <div class=" mt-4 ml-5">
-                    <form method="post" action="/admin/store_ubah_jadwal "  enctype="multipart/form-data">
+                    <form method="post" action="{{route('store_ubah_jadwal', $tb_jadwal->id_jadwal)}}"  enctype="multipart/form-data">
                         @csrf
+                        {{-- @method('patch') --}}
                         <div class="row">
                             <div class="col-md-10">      
-                                <div class="form-group ml-2">
+                                Ubah Jadwal Untuk Peserta 
+                                <h5>{{ $tb_jadwal->nama }}</h5>
+                                <div class="form-group ml-2 mt-2">
                                     <label for="tanggal_tes">Tanggal Tes</label>
                                     <input type="date" class="form-control @error('tanggal_tes') is-invalid 
                             @enderror" id="tanggal_tes" placeholder="Masukkan pilihan A" name="tanggal_tes" value="{{ $tb_jadwal->tanggal_tes }}">
@@ -43,16 +46,17 @@
                                         {{$message}}</div>
                                     @enderror
                                 </div>
-                                
                                 <div class="form-group ml-2">
-                                    <label for="waktu">Durasi</label>
-                                    <input type="timer" class="form-control @error('Pilihan B') is-invalid @enderror" id="waktu" placeholder="Masukan waktu" name="waktu" value="{{ $tb_jadwal->waktu }}">
-                                    @error('waktu')
+                                    <label for="jam_selesai">Jam Selesai</label>
+                                    <input type="time" class="form-control @error('jam_selesai') is-invalid 
+                            @enderror" id="jam_selesai" placeholder="Masukkan pilihan A" name="jam_selesai" value="{{  $tb_jadwal->jam_selesai }}">
+                                    @error('jam_selesai')
                                     <div class="invalid-feedback">
                                         {{$message}}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group ml-2">
+                                    @enderror
+                                </div>
+                                
+                                    {{-- <div class="form-group ml-2">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -69,13 +73,13 @@
                                                     <td><?php echo $no++ ?></td>
                                                     <td><?php echo $u->nama ?></td>
                                                     <td>
-                                                        <input type="checkbox" class="mt-2" name="jadwal[]" value="{{ $tb_jadwal->tanggal_tes}}">
+                                                        <input type="checkbox" class="mt-2" name="jadwal[]" value="{{ $tb_jadwal->id_peserta}}">
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                 </table>
-                                    </div>
+                                    </div> --}}
                                 <div class="text-right mx-4 my-1 mb-4">
                                     <button type="submit" class="btn btn-dark mt-4 mb-3">Simpan</button>
                                     <button type="reset" class="btn btn-danger mt-4 mb-3">Reset</button>

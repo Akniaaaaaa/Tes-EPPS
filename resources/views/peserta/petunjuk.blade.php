@@ -1,17 +1,6 @@
 @extends('layout/pesertaa')
 @section('container')
-<div class="row ml-2 mr-2">
-<div class="col-3 mb-5 mt-5">
-  <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
-    <div class="list-group" style="box-shadow: 4px 3px 8px 1px #4286ad;">
-      
-      <a href="{{ url('/peserta/petunjuk') }}" class="list-group-item list-group-item-action"><i class="fas fa-compass"></i>  Petunjuk</a>
-      <a href="{{ route('jadwal.peserta', Auth::guard('peserta')->id()) }}" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i>  Jadwal</a>
-      <a href="{{ route('hpp.peserta', Auth::guard('peserta')->id()) }}"class="list-group-item list-group-item-action"><i class="fas fa-poll"></i>  Hasil</a>
-      
-    </div>
-  </div>
-</div>
+
 <div class="col-9 mb-5 mt-5">
     <div class="card text-white bg-gradient-primary" style="box-shadow: 4px 3px 8px 1px #4286ad;" >
       <div class="card-header" style="color: rgb(0, 0, 0)"><h3 align="center" class="mt-3">Petunjuk Pengerjaan </div>

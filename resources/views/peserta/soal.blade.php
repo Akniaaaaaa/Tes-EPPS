@@ -39,14 +39,25 @@
                     </div>
                     <div class="card-footer text-muted">
                         @foreach ($tb_soal as $ns)
+                        {{-- tes --}}
                                  <a href="{{route('soal', $ns->nomor_soal)}}">
-                                    <button type="submit"  class="btn btn-warning mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    <button type="submit" id="change" onchange="changeColor(this.value)" value ="blue" class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
                                  </a>
+                                 {{-- lumayan benar --}}
                                     {{-- @if (Request::segment(3) == $loop->iteration)
-                                    <button type="submit"  class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    <a href="{{route('soal', $ns->nomor_soal)}}">
+                                        <button type="submit"  class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    </a>
+                                    @elseif(request() ->segment(3)  == $ns->nomor_soal_jawaban && $ns->jawaban  != null)
+                                    <a href="{{route('soal', $ns->nomor_soal_jawaban)}}">
+                                        <button type="submit"  class="btn btn-danger mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    </a>
                                     @else
-                                    <button type="submit"  class="btn btn-primary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    <a href="{{route('soal', $ns->nomor_soal)}}">
+                                        <button type="submit"  class="btn btn-primary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
+                                    </a>
                                     @endif --}}
+{{-- selesai lumayan benar --}}
                                     {{-- @if (!empty($tb_jawaban))
                                     <button type="submit"  class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
                                     @elseif(Request::segment(3) == $loop->iteration)
@@ -77,8 +88,13 @@
         <div class="modal-body" style="color: white">
             Pilih "Selesai" jika kamu ingin mengakhiri tes ini.
                         <div class="text-right mx-4 my-1 mb-4">
-                            <button type="submit" class="btn btn-dark mt-4 mb-3">Selesai</button>
+                            @csrf
+                            <a
+                            type="submit" class="btn btn-danger mt-4 mb-3" href="{{ route('hasil.peserta', Auth::guard('peserta')->id()) }}">Selesai</button>
+                            </a>
+                            <a>
                             <button type="reset" class="btn btn-danger mt-4 mb-3">Batal</button>
+                            </a>
                         </div>
                     </div>
                  </div>

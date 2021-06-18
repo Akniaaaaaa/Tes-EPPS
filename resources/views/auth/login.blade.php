@@ -94,25 +94,26 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center mt-3">
-                                        <h1 class="h4 text-gray-900 mb-4">Selamat Datang<br>Silahkan LogIn</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Selamat Datang<br>Silahkan Masuk</h1>
                                     </div>
+                                    @if (session('status'))
+                                    <div class="alert alert-success">
+                                        {{ session('status') }}
+                                    </div>
+                                    @endif
                                     <form method="POST" action="{{ route('store-login') }}">
                                         @csrf
                 
                                         <div class="form-group row">
-                                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail ') }}</label>
-                
+                                            <label for="nama_pengguna" class="col-md-4 col-form-label text-md-right">{{ __('Nama Pengguna') }}</label>
                                             <div class="col-md-6">
-                                                <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" 
-                                                style="border-radius: 30px"
-                                                name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                
-                                                @error('email')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                                <input id="nama_pengguna" type="text" class="form-control @error('nama_pengguna') is-invalid @enderror" name="nama_pengguna" value="{{ old('nama_pengguna') }}" required autocomplete="nama_pengguna" placeholder="nama_pengguna Lengkap" autofocus>
+                                                @error('nama_pengguna')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                                 @enderror
-                                            </div>
+                                              </div>
                                         </div>
                 
                                         <div class="form-group row">
@@ -120,7 +121,7 @@
                 
                                             <div class="col-md-6">
                                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                                                style="border-radius: 30px" name="password" required autocomplete="current-password">
+                                                name="password" required autocomplete="current-password">
                 
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -158,6 +159,13 @@
                                     </form>
                                         <div class="text-center">
                                             <a class="small mr-3" href="{{ route('peserta/buat_akun') }}"><h4>Buat akun</a>
+                                        </div>
+                                        
+                                        <div class="text-center">
+                                            <p class="small mr-3" style="text-align: right">
+                                                Kontak Person<br>
+                                                0813-6716-2157
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

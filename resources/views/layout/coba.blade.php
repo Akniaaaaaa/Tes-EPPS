@@ -17,12 +17,54 @@
     <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
-    
     <!-- Custom styles for this template-->
     <link href="{{url('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
-    @yield('surat')
-</head>
+    <?php
+    $jadwal = App\Models\Jadwal::where('id_peserta', auth()->user()->id)->first();
+    $tanggal = $jadwal->tanggal_tes;
+    // dd($tanggal);
+    $jam_mulai = $jadwal->jam_tes;
+    $jam_selesai = $jadwal->jam_selesai;
+    $mulai = $tanggal . ' ' . $jam_mulai;
+    $selesai = $tanggal . ' ' . $jam_selesai;
+    ?>
+<script>
+        var tim;       
+        var min = '${sessionScope.min}';
+        var sec = '${sessionScope.sec}';
+        var f = new Date();
 
+        function customSubmit(someValue){  
+        	 document.questionForm.minute.value = min;   
+        	 document.questionForm.second.value = sec; 
+        	 document.questionForm.submit();  
+        	 }  
+
+        function examTimer() {
+            if (parseInt(sec) >0) {
+			    document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";
+                sec = parseInt(sec) - 1;                
+                tim = setTimeout("examTimer()", 1000);
+            }
+            else {
+
+			    if (parseInt(min)==0 && parseInt(sec)==0){
+			    	document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";
+				     alert("Time Up");
+				     document.questionForm.minute.value=0;
+				     document.questionForm.second.value=0;
+				     document.questionForm.submit();
+			     }
+                if (parseInt(sec) == 0) {				
+				    document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";					
+                    min = parseInt(min) - 1;
+					sec=59;
+                    tim = setTimeout("examTimer()", 1000);
+                }
+            }
+        }
+    < /script>
+</head>
 <body id="page-top">
     
     <div id="wrapper">        
@@ -47,11 +89,15 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: white" href="{{ url('/peserta/hasil/{id}') }}">HASIL</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" style="color: white" href="{{ url('/peserta/jadwal') }}">JADWAL</a>
-                            {{-- <p id="demo"></p> 
                         </li> --}}
+                        {{-- <li class="nav-item">
+                            <a class="nav-link" style="color: white" href="{{ url('/peserta/jadwal') }}">JADWAL</a>
+                            <p id="demo"></p>
+                        </li> --}}
+                        {{-- <a class="nav-link" style="color: white" href="{{ url('/peserta/jadwal') }}">JADWAL</a> --}}
+                        <li class="nav-item">
+                            <p id="please" style="color: white;"></p>
+                        </li>
                         
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -89,18 +135,7 @@
             </nav>
             
             <div class="container-fluid">
-                <div class="row ml-2 mr-2">
-                    <div class="col-3 mb-5 mt-5">
-                      <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
-                        <div class="list-group" style="box-shadow: 4px 3px 8px 1px #4286ad;">
-                          
-                          <a href="{{ url('/peserta/petunjuk') }}" class="list-group-item list-group-item-action"><i class="fas fa-compass"></i>  Petunjuk</a>
-                          <a href="{{ route('jadwal.peserta', Auth::guard('peserta')->id()) }}" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i>  Jadwal</a>
-                          <a href="{{ route('hpp.peserta', Auth::guard('peserta')->id()) }}"class="list-group-item list-group-item-action"><i class="fas fa-poll"></i>  Hasil</a>
-                          
-                        </div>
-                      </div>
-                    </div>
+                
                 @yield('container')
                 
             </div>
@@ -136,7 +171,7 @@ aria-hidden="true">
         <div class="modal-body">Pilih "Logout" jika kamu ingin keluar dari website ini.</div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-            <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+            <a class="btn btn-primary" href="{{ route('login') }}">Logout</a>
         </div>
     </div>
 </div>
@@ -153,7 +188,6 @@ aria-hidden="true">
 
 <script src="{{url('admin/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{url('admin/js/demo/chart-pie-demo.js')}}"></script>
-@yield('bawahSurat')
 
 </body>
 </html>

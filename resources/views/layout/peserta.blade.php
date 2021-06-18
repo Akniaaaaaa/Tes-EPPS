@@ -17,58 +17,82 @@
     <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
-    
     <!-- Custom styles for this template-->
     <link href="{{url('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
     <?php
+
     $jadwal = App\Models\Jadwal::where('id_peserta', auth()->user()->id)->first();
     $tanggal = $jadwal->tanggal_tes;
     $jam_mulai = $jadwal->jam_tes;
     $jam_selesai = $jadwal->jam_selesai;
     $mulai = $tanggal . ' ' . $jam_mulai;
     $selesai = $tanggal . ' ' . $jam_selesai;
-    ?>
+    $m = strtotime($mulai);
+    $s = strtotime($selesai);
     
+    // vardump($mulai);
+
+    // $now = Carbon\Carbon::now();
+    // $now1h =  Carbon\Carbon::now->add(1, 'hours');
+    ?>
     <script type="text/javascript">
         // Set the date we're counting down to
-        var count_idd = "<?php echo $selesai; ?>";
-        var now = new Date(count_idd).getTime();
-        // var countDownDate = new Date("June 04, 2021 20:55:00").getTime();
-        
+        var count_id = '<?php echo $selesai?>';
+        // var countDownDate = new Date(count_id).getTime();
+        var countDownDate = new Date("June 18, 2021 18:44:00").getTime(); 
+        // var countDownDate = 1623152760000;
+        // var dt = new Date();
+        // var countDownDate = dt.setHours( dt.getHours() + 2 );
+
         // Update the count down every 1 second
-        var x = setInterval(function() {
-            
+        var x = setInterval(function() {    
             // Get today's date and time
-            var count_id = "<?php echo $mulai; ?>";
-            var countDownDate = new Date(count_id).getTime();
-            // var now = new Date().getTime();
-            
+            var count_idd = '<?php echo $selesai?>';
             // Find the distance between now and the count down date
-            var distance = now - countDownDate;
-            console.log(distance);
+            // var now = new Date(count_idd).getTime();
+            // var distance =  countDownDate-now;
+            var now = new Date().getTime(); 
+            var distance = countDownDate - now;
+            // var distance = 3600000;
+            // console.log( distance);
             // Time calculations for days, hours, minutes and seconds
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);           
             // Display the result in the element with id="demo"
             document.getElementById("please").innerHTML = hours + "h "
-            + minutes + "m " + seconds + "s ";
-            
+            + minutes + "m " + seconds + "s ";      
+            console.log(hours + "h "+ minutes + "m " + seconds + "s ");
             // If the count down is finished, write some text
             if (distance < 0) {
-                clearInterval(x);
-                
+                clearInterval(x);         
                 let id = document.getElementById('authUser').value
                 let url = "{{ route('hasil.peserta', ':id') }}";
                 url = url.replace(':id', id);
-                document.location.href=url;                
-                
+                document.location.href=url;                             
                 document.getElementById("please").innerHTML = "EXPIRED";
             }
         }, 1000);
     </script>
+    
+    {{-- <script>
+        function myFunction() {
+          var x = document.getElementById("tombol");
+          
+          x.style.color = "green"; 
+        }
+        </script> --}}
+        <script type="text/javascript">
+        function changeColor(color){
+            document.getElementById('change').style.background=color;
+        }
+
+        </script>
+        <script>
+            let btnPrimary = document.querySelector('#primary');
+            btnPrimary.addEventListener('click', () => btnPrimary.style.backgroundColor='#337ab7')
+        </script>
 </head>
 
 <body id="page-top">
@@ -101,8 +125,8 @@
                             <p id="demo"></p>
                         </li> --}}
                         {{-- <a class="nav-link" style="color: white" href="{{ url('/peserta/jadwal') }}">JADWAL</a> --}}
-                        <li class="nav-item">
-                            <p id="please"></p>
+                        <li class="nav-item mt-3">
+                            <p id="please" style="color: white;"></p>
                         </li>
                         
                         <li class="nav-item dropdown no-arrow">

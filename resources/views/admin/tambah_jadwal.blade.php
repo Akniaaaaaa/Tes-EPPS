@@ -53,15 +53,22 @@
                                     @enderror
                                 </div>
                                 
-                                <div class="form-group ml-2">
-                                    <label for="waktu">Durasi</label>
-                                    <input type="timer" class="form-control @error('Pilihan B') is-invalid @enderror" id="waktu" placeholder="Masukan waktu" name="waktu" value="{{ old('waktu') }}">
-                                    @error('waktu')
-                                    <div class="invalid-feedback">
-                                        {{$message}}</div>
-                                        @enderror
-                                    </div>
+                               
                                     <div class="form-group ml-2">
+                                        <div class="row mt-5"  align="right">
+                                            <div class="col-8 ">
+                                                 <form action="{{route('cari_peserta_jadwal')}}" method="GET">
+                                                    <div class="input-group">
+                                                        <input type="search" style="width: 250px; height: 40px" href="{{route('cari_peserta_jadwal')}}" name="cari" value="{{ old('cari') }}" class="form-control form-control-lg" placeholder="Temukan Peserta">
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-lg btn-default" value="cari" >
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -84,6 +91,8 @@
                                             <?php endforeach; ?>
                                         </tbody>
                                 </table>
+                                
+                                {{$tb_peserta->links("pagination::bootstrap-4")}}
                                     </div>
                                 <div class="text-right mx-4 my-1 mb-4">
                                     <button type="submit" class="btn btn-dark mt-4 mb-3">Simpan</button>

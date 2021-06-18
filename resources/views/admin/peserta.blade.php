@@ -14,24 +14,25 @@
                     <div class="table-responsive">
                         
                         <table id="example1" class="table table-bordered table-striped">
-                            <div class="container-fluid">
-                                {{-- <h2 class="text-center display-4">Search</h2> --}}
-                                <div class="row">
-                                    <div class="col-md-8 offset-md-2">
-                                        <form action="/transaksi/cari" method="GET">
-                                            <div class="input-group">
-                                                <input type="search" name="cari" value="{{ old('cari') }}" class="form-control form-control-lg" placeholder="Temukan Peserta">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-lg btn-default" value="cari" href="/transaksi/cari">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
+                            <div class="container-fluid">       
+                            <div class="row mt-5"  align="right">
+                                <div class="col-6 ">
+                                    {{-- <img src="{{ asset('appwebsite/gambar/sahabat_psikologi.png')}}" style="width: 200px; height: 200px;"/> --}}
+                                    <form action="{{route('cari_peserta')}}" method="GET">
+                                        <div class="input-group">
+                                            <input type="search" style="width: 250px; height: 40px" name="cari" href="{{route('cari_peserta')}}" value="{{ old('cari') }}" class="form-control form-control-lg" placeholder="Temukan Peserta">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-lg btn-default" href="{{route('cari_peserta')}}" value="cari" >
+                                                    <i class="fa fa-search"></i>
+                                                </button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-6 ">
+                                      <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambah_peserta">Tambah peserta</button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambah_peserta">Tambah peserta</button>
                             @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
@@ -42,6 +43,7 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Nama</th>
+                                    <th scope="col">Nama Pengguna</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -53,6 +55,7 @@
                                         <td><?php echo $no++ ?></td>
                                         <td><?php echo $p->email ?></td>
                                         <td><?php echo $p->nama ?></td>
+                                        <td><?php echo $p->nama_pengguna ?></td>
                                         <td><a href="/admin/info/{{$p->id}}" 
                                             class="btn btn-sm btn-primary" style="color: white; cursor: pointer;">
                                             <i class="fas fa-info"></i></a>
@@ -78,18 +81,14 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-    
-    <!-- /.content -->
 </div>
 
 
 
   
   <!-- Modal -->
-  <div class="modal fade" id="tambah_peserta" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade bd-example-modal-lg" id="tambah_peserta" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Tambah Peserta</h5>
@@ -182,7 +181,7 @@
                 </div>
                 </div>
                 <div class="form-group row ml-5">
-                    <label for="Foto" class="col-md-3 col-form-label text-md-left">{{ __('Foto ') }}</label>
+                    <label for="Foto" class="col-md-3 col-form-label text-md-left">{{ __('Foto Bukti Pembayaran') }}</label>
                     <div class="col-md-10">
                     <input type="file" class="form-control
                         @error('foto') is-invalid @enderror" id="foto" placeholder="Masukan foto" 
@@ -213,7 +212,7 @@
                 </div>
                 </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="form-group row mb-3">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Simpan') }}

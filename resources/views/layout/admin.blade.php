@@ -45,9 +45,9 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{ url('/') }}">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Halaman Utama</span></a>
             </li>
 
             <!-- Divider -->
@@ -71,11 +71,11 @@
                     <i class="fas fa-calendar-alt"></i>
                     <span>Jadwal</span></a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ url('/admin/soal') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Soal</span></a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('/admin/hasil') }}">
                     <i class="fas fa-poll"></i>
@@ -220,7 +220,7 @@
     <!-- Page level custom scripts -->
     <script src="{{url('admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{url('admin/js/demo/chart-pie-demo.js')}}"></script>
-
+    @yield('grafik')
 </body>
 
 </html>

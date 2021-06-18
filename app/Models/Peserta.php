@@ -21,6 +21,8 @@ class Peserta extends Authenticatable
         'jenis_kelamin',
         'password',
         'foto',
+        'nama_pengguna',
+        'foto_pembayaran',
 
     ];
     protected $hidden = [

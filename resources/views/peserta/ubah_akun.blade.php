@@ -18,7 +18,7 @@
             <form method="POST" action="{{ route('peserta/simpan_perubahan', Auth::guard('peserta')->id()) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Buat Akun</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Ubah Akun</h1>
                 </div>
                 <form >
                     <div class="form-group row ml-5">

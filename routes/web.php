@@ -41,8 +41,10 @@ Route::middleware('auth:pegawai')->group(function () {
     Route::get('/admin/info_peserta/{id}', [App\Http\Controllers\HasilController::class, 'info_peserta'])->name('admin/info_peserta');
     Route::get('/admin/tambah_jadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('admin/tambah_jadwal');
     Route::post('/admin/store_jadwal', [App\Http\Controllers\JadwalController::class, 'store']);
-    Route::patch('/admin/store_ubah_jadwal', [App\Http\Controllers\JadwalController::class, 'store_ubah_jadwal']);
+    Route::post('/admin/store_ubah_jadwal/{id}', [App\Http\Controllers\JadwalController::class, 'store_ubah_jadwal'])->name('store_ubah_jadwal');
     Route::post('/admin/analisis/{id}', [App\Http\Controllers\HasilController::class, 'analisis'])->name('admin/analisis');
+    Route::get('/admin/peserta', [App\Http\Controllers\PesertaController::class, 'cari'])->name('cari_peserta');
+    Route::get('/admin/tambah_jadwal', [App\Http\Controllers\JadwalController::class, 'cari'])->name('cari_peserta_jadwal');
 });
 Route::get('/peserta/buat_akun', [App\Http\Controllers\PesertaController::class, 'buat_akun'])->name('peserta/buat_akun');
 Route::post('/peserta/store_akun', [App\Http\Controllers\PesertaController::class, 'store_akun'])->name('peserta/store_akun');
@@ -54,8 +56,9 @@ Route::middleware('auth:peserta')->group(function () {
     Route::get('/peserta/token', [App\Http\Controllers\JadwalController::class, 'token'])->name('token.peserta');
     Route::post('/peserta/jawaban', [App\Http\Controllers\PesertaController::class, 'jawaban'])->name('peserta.jawaban');
     Route::get('/peserta/soal/{nomor}', [App\Http\Controllers\PesertaController::class, 'lihat'])->name('soal');
-    Route::get('/peserta/hpp/{peserta}', [App\Http\Controllers\HasilController::class, 'hasil'])->name('hasil.peserta');
-    Route::get('/peserta/hasil/{id}', [App\Http\Controllers\HasilController::class, 'cetak_hasil'])->name('hpp.peserta');
+    Route::get('/peserta/hasil/{peserta}', [App\Http\Controllers\HasilController::class, 'hasil'])->name('hasil.peserta');
+    Route::get('/peserta/hasil_tes/{id}', [App\Http\Controllers\HasilController::class, 'cetak_hasil'])->name('hpp.peserta');
+    Route::get('/peserta/cetak_hpp/{id}', [App\Http\Controllers\HasilController::class, 'cetak'])->name('cetak_hpp.peserta');
     Route::get('/peserta/profile/{peserta}', [App\Http\Controllers\PesertaController::class, 'profile'])->name('profile.peserta');
     Route::get('/peserta/konfirmasi_token/{peserta}', [App\Http\Controllers\JadwalController::class, 'konfirmasi_token'])->name('konfirmasi_token.peserta');
     Route::get('/peserta/jadwal/{peserta}', [App\Http\Controllers\PesertaController::class, 'jadwal_peserta'])->name('jadwal.peserta');
