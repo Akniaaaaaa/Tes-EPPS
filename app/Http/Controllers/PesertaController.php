@@ -112,10 +112,6 @@ class PesertaController extends Controller
     }
     public function lihat($nomor)
     {
-        // $now = now();
-        // $now1h =  now()->add(1, 'hours');
-        // $selisih = $now1h - $now;
-        // dd($selisih);
         $soal = Soal::where('nomor_soal', $nomor)->first();
         $tb_soal = Soal::all();
         $id_peserta = auth()->user()->id;

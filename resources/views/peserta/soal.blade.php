@@ -10,68 +10,50 @@
                     <div class="card-header">
                         {{-- <p id="please"></p> --}}
                         <span class="badge bg-primary" style="width: 50px; height: 30px"><h4 style="color: cornsilk;">{{$soal_nomor}}</h4></span></h1>
-                        
+
                     </div>
                     <div class="card-body" align="left">
 
-                        <form method="post" action="{{route('peserta.jawaban')}}" enctype="multipart/form-data">     
+                        <form method="post" action="{{route('peserta.jawaban')}}" enctype="multipart/form-data">
                             @csrf
                             @if (!empty($jawaban))
                             <input type="hidden" name="nomor_soal" value="{{$soal_nomor}}">
-                            <input type="radio" name="pilihan" value="A" required <?php if($jawaban=='A'){echo 'checked';}?>><label for="Pilihan_a" > A. {{$soal->Pilihan_a}}</label><br> 
-                            <input type="radio" name="pilihan" value="B" required <?php if($jawaban=='B'){echo 'checked';}?>><label for="Pilihan_a"> B. {{$soal->Pilihan_b}}</label><br> 
+                            <input type="radio" name="pilihan" value="A" required><label for="Pilihan_a" > A. {{$soal->Pilihan_a}}</label><br>
+                            <input type="radio" name="pilihan" value="B" required <?php if($jawaban=='B'){echo 'checked';}?>><label for="Pilihan_a"> B. {{$soal->Pilihan_b}}</label><br>
                             <br>
                             @elseif(empty($jawaban))
                             <input type="hidden" name="nomor_soal" value="{{$soal_nomor}}">
-                            <input type="radio" name="pilihan" value="A" required ><label for="Pilihan_a" > A. {{$soal->Pilihan_a}}</label><br> 
-                            <input type="radio" name="pilihan" value="B" required><label for="Pilihan_a"> B. {{$soal->Pilihan_b}}</label><br> 
-                            <br> 
+                            <input type="radio" name="pilihan" value="A" required ><label for="Pilihan_a" > A. {{$soal->Pilihan_a}}</label><br>
+                            <input type="radio" name="pilihan" value="B" required><label for="Pilihan_a"> B. {{$soal->Pilihan_b}}</label><br>
+                            <br>
                             @endif
                             <div>
                                 <a>
                                     <button type="submit" class="btn btn-warning" style="size: 5px; color: black">SIMPAN & LANJUTKAN</button>
                                 </a>
-                               
+
                                 <button type="submit" class="btn btn-danger" style= "color: black" data-toggle="modal" data-target="#selesai">SELESAI</button>
-                                
+
                             </div>
-                        </form> 
+                        </form>
                     </div>
                     <div class="card-footer text-muted">
                         @foreach ($tb_soal as $ns)
-                        {{-- tes --}}
-                                 <a href="{{route('soal', $ns->nomor_soal)}}">
-                                    <button type="submit" id="change" onchange="changeColor(this.value)" value ="blue" class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                 </a>
-                                 {{-- lumayan benar --}}
-                                    {{-- @if (Request::segment(3) == $loop->iteration)
-                                    <a href="{{route('soal', $ns->nomor_soal)}}">
-                                        <button type="submit"  class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    </a>
-                                    @elseif(request() ->segment(3)  == $ns->nomor_soal_jawaban && $ns->jawaban  != null)
-                                    <a href="{{route('soal', $ns->nomor_soal_jawaban)}}">
-                                        <button type="submit"  class="btn btn-danger mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    </a>
-                                    @else
-                                    <a href="{{route('soal', $ns->nomor_soal)}}">
-                                        <button type="submit"  class="btn btn-primary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    </a>
-                                    @endif --}}
-{{-- selesai lumayan benar --}}
-                                    {{-- @if (!empty($tb_jawaban))
-                                    <button type="submit"  class="btn btn-secondary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    @elseif(Request::segment(3) == $loop->iteration)
-                                    <button type="submit"  class="btn btn-primary mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    @elseif(empty($tb_jawaban))
-                                    <button type="submit"  class="btn btn-warning mb-2" style="width: 60px; height: 30px" >{{$ns->nomor_soal}}</button>
-                                    @endif --}}
-                              
+                            @if ($ns->jawabanDiisi($ns->nomor_soal))
+                            <a href="{{route('soal', $ns->nomor_soal)}}">
+                                <button type="submit" id="change" onchange="changeColor(this.value)" value ="blue" class="btn btn-success mb-2" style="width: 60px; height: 30px;" >{{$ns->nomor_soal}}</button>
+                            </a>
+                            @else
+                            <a href="{{route('soal', $ns->nomor_soal)}}">
+                                <button type="submit" id="change" onchange="changeColor(this.value)" value ="blue" class="btn btn-secondary mb-2" style="width: 60px; height: 30px;" >{{$ns->nomor_soal}}</button>
+                            </a>
+                            @endif
                         @endforeach
                     </div>
-                    
+
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

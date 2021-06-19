@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     <title>Sahabat Psikologi</title>
-    
+
     <!-- Custom fonts for this template-->
     <link rel="icon" href="{{ asset('appwebsite/gambar/sahabat_psikologi.png')}}" type="image/x-icon">
     <link href="{{url('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css"">
@@ -29,7 +29,7 @@
     $selesai = $tanggal . ' ' . $jam_selesai;
     $m = strtotime($mulai);
     $s = strtotime($selesai);
-    
+
     // vardump($mulai);
 
     // $now = Carbon\Carbon::now();
@@ -39,19 +39,19 @@
         // Set the date we're counting down to
         var count_id = '<?php echo $selesai?>';
         // var countDownDate = new Date(count_id).getTime();
-        var countDownDate = new Date("June 18, 2021 18:44:00").getTime(); 
+        var countDownDate = new Date("June 19, 2021 11:00:00").getTime();
         // var countDownDate = 1623152760000;
         // var dt = new Date();
         // var countDownDate = dt.setHours( dt.getHours() + 2 );
 
         // Update the count down every 1 second
-        var x = setInterval(function() {    
+        var x = setInterval(function() {
             // Get today's date and time
             var count_idd = '<?php echo $selesai?>';
             // Find the distance between now and the count down date
             // var now = new Date(count_idd).getTime();
             // var distance =  countDownDate-now;
-            var now = new Date().getTime(); 
+            var now = new Date().getTime();
             var distance = countDownDate - now;
             // var distance = 3600000;
             // console.log( distance);
@@ -59,28 +59,28 @@
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);           
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
             // Display the result in the element with id="demo"
             document.getElementById("please").innerHTML = hours + "h "
-            + minutes + "m " + seconds + "s ";      
+            + minutes + "m " + seconds + "s ";
             console.log(hours + "h "+ minutes + "m " + seconds + "s ");
             // If the count down is finished, write some text
             if (distance < 0) {
-                clearInterval(x);         
+                clearInterval(x);
                 let id = document.getElementById('authUser').value
                 let url = "{{ route('hasil.peserta', ':id') }}";
                 url = url.replace(':id', id);
-                document.location.href=url;                             
+                document.location.href=url;
                 document.getElementById("please").innerHTML = "EXPIRED";
             }
         }, 1000);
     </script>
-    
+
     {{-- <script>
         function myFunction() {
           var x = document.getElementById("tombol");
-          
-          x.style.color = "green"; 
+
+          x.style.color = "green";
         }
         </script> --}}
         <script type="text/javascript">
@@ -96,21 +96,21 @@
 </head>
 
 <body id="page-top">
-    
-    <div id="wrapper">        
-        
+
+    <div id="wrapper">
+
         <div id="content-wrapper" class="d-flex flex-column">
-            
+
             <div id="content">
-                
+
                 <nav class="navbar navbar-expand navbar-light bg-primary topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    
+
                     <ul class="navbar-nav ml-auto">
                         <input type="hidden" value="{{ auth()->user()->id }}" id="authUser">
-                        
+
                         {{-- <li class="nav-item">
                             <a class="nav-link active" style="color: white; text-transform: uppercase;" aria-current="page" href="{{ url('/peserta/petunjuk') }}">PETUNJUK</a>
                         </li>
@@ -128,7 +128,7 @@
                         <li class="nav-item mt-3">
                             <p id="please" style="color: white;"></p>
                         </li>
-                        
+
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,7 +137,7 @@
                                 <img class="img-profile rounded-circle"
                                 src="{{ asset('storage/unggah/Profile/Peserta/' . $peserta->foto) }}">
                             </a>
-                            
+
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="{{ route('profile.peserta', Auth::guard('peserta')->id()) }}">
@@ -159,19 +159,19 @@
                             </a>
                         </div>
                     </li>
-                    
+
                 </ul>
-                
+
             </nav>
-            
+
             <div class="container-fluid">
-                
+
                 @yield('container')
-                
+
             </div>
-            
+
         </div>
-        
+
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
@@ -179,9 +179,9 @@
                 </div>
             </div>
         </footer>
-        
+
     </div>
-    
+
 </div>
 
 <a class="scroll-to-top rounded" href="#page-top">
